@@ -21,6 +21,8 @@ protected:
     vector<Operator> parse(const string &line);
 
     string to_binary(const string &value, int len);
+
+    string to_binary(int value, int len);
 };
 
 #endif //COMPILERS_PROJECT_INSTRUCTION_H

@@ -21,10 +21,10 @@ string LDAInstruction::process(const string &line) {
     assert(is_this(line));
 
     vector<Operator> vals = parse(line);
-    string res = "110010";
+    string res = "000010";
     res = res + to_binary(vals[3].get_value(), 5);
     res = res + to_binary(vals[0].get_value(), 5);
     res = res + '\n';
-    res = res + to_binary(vals[5].get_value(), 16); //todo should it be like this?
+    res = res + to_binary(vals[5].get_value(), 32);
     return res;
 }

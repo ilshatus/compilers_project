@@ -9,5 +9,5 @@ bool DefaultInstruction::is_this(const string &line) {
 }
 
 string DefaultInstruction::process(const string &line) {
-    return "Default Instruction " + line;
+    throw "Wrong instruction: `" + line + "`";
 }

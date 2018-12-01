@@ -6,10 +6,13 @@
 #define COMPILERS_PROJECT_LDCINSTRUCTION_H
 
 #include "Instruction.h"
+#include <unordered_map>
 
 class LDCInstruction: public Instruction {
+private:
+    unordered_map<string, int> labels;
 public:
-    LDCInstruction() = default;
+    LDCInstruction(unordered_map<string, int> &labels) : labels(labels) {}
     bool is_this(const string &line) override;
     string process(const string &line) override;
 };
