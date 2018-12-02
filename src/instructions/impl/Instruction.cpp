@@ -37,7 +37,7 @@ string Instruction::to_binary(const string &value, int len) {
     return to_binary(val, len);
 }
 
-string Instruction::to_binary(int value, int len) {
+string Instruction::to_binary(long long value, int len) {
     string res;
     while (value > 0) {
         res.push_back(static_cast<char>(value % 2 + '0'));
@@ -48,4 +48,14 @@ string Instruction::to_binary(int value, int len) {
     }
     reverse(res.begin(), res.end());
     return res;
+}
+string Instruction::twos_complement(const string &value, int len) {
+    int val = stoi(value);
+    return twos_complement(val, len);
+}
+
+string Instruction::twos_complement(int value, int len) {
+    if(value >= 0)
+        return to_binary(value, len);
+    return to_binary((1ll << len) + value, len);
 }

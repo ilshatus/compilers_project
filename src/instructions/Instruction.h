@@ -22,7 +22,11 @@ protected:
 
     string to_binary(const string &value, int len);
 
-    string to_binary(int value, int len);
+    string to_binary(long long value, int len);
+
+    string twos_complement(const string &value, int len);
+
+    string twos_complement(int value, int len);
 };
 
 #endif //COMPILERS_PROJECT_INSTRUCTION_H
