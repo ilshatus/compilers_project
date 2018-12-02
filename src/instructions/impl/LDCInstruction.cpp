@@ -19,14 +19,22 @@ string LDCInstruction::process(const string &line) {
     assert(is_this(line));
     vector<Operator> vals = parse(line);
     string res = "110010";
-    if (vals[3].get_type() == NUMBER)
+    if (vals[3].get_type() == NUMBER) {
         res = res + to_binary(vals[3].get_value(), 5);
-    else {
+        res = res + to_binary(vals[0].get_value(), 5);
+    } else {
         if (labels.count(vals[3].get_value()) == 0) {
             throw "Label " + vals[3].get_value() + " not found";
         }
-        res = res + to_binary(labels[vals[3].get_value()], 5);
+        // set 0 to register
+        res = res + to_binary(0, 5);
+        res = res + to_binary(vals[0].get_value(), 5);
+
+        // add label address to register
+        res = res + "000010";
+        res = res + to_binary(vals[0].get_value(), 5);
+        res = res + to_binary(vals[0].get_value(), 5);
+        res = res + to_binary(labels[vals[3].get_value()], 32);
     }
-    res = res + to_binary(vals[0].get_value(), 5);
     return res;
 }

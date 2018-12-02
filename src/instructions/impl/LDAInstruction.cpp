@@ -33,7 +33,6 @@ string LDAInstruction::process(const string &line) {
     string res = "000010";
     res = res + to_binary(vals[3].get_value(), 5);
     res = res + to_binary(vals[0].get_value(), 5);
-    res = res + '\n';
     if(vals[5].get_type() == NUMBER)
         res = res + twos_complement(vals[5].get_value(), 32);
     else

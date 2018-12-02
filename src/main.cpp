@@ -31,8 +31,8 @@ bool is_label(const string &line) {
     bool flag = line[0] == '<' && line.length() > 2;
     for (int i = 1; i < line.length() - 1; i++) {
         flag = flag
-                && ((line[i] >= 'a' && line[i] <= 'z')
-                || (line[i] >= 'A' && line[i] <= 'Z'));
+               && ((line[i] >= 'a' && line[i] <= 'z')
+                   || (line[i] >= 'A' && line[i] <= 'Z'));
     }
     return flag && line.back() == '>';
 }
@@ -78,7 +78,7 @@ void process_assembly_code() {
         if (is_label(lines[i])) {
             string label = lines[i].substr(1, lines[i].length() - 2);
             i++;
-            if (i != lines.size() &&  data_instruction->is_this(lines[i])) {
+            if (i != lines.size() && data_instruction->is_this(lines[i])) {
                 labels[label] = (int) result_instructions.size();
                 while (i < lines.size() && data_instruction->is_this(lines[i])) {
                     vector<string> tmp = data_instruction->process_to_vector(lines[i]);
@@ -116,7 +116,16 @@ void process_assembly_code() {
     }
 
     for (string &result_instruction : result_instructions) {
-        cout << result_instruction << endl;
+        unsigned char tmp = 0;
+        for (int i = 0; i < result_instruction.length(); i++) {
+            if (i % 8 == 0) {
+                if (i) cout << tmp;
+                tmp = 0;
+            }
+            int bit = 7 - i % 8;
+            tmp |= (result_instruction[i] == '1') << bit;
+        }
+        cout << tmp;
     }
 }
 
