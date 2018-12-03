@@ -59,7 +59,7 @@ void add_instructions(vector<Instruction *> &instructions, unordered_map<string,
     instructions.push_back(new DefaultInstruction());
 }
 
-void process_assembly_code() {
+string process_assembly_code() {
     vector<Instruction *> instructions;
     vector<string> result_instructions;
     unordered_map<string, int> labels;
@@ -114,26 +114,27 @@ void process_assembly_code() {
             }
         }
     }
-
+    string res;
     for (string &result_instruction : result_instructions) {
         unsigned char tmp = 0;
         for (int i = 0; i < result_instruction.length(); i++) {
             if (i % 8 == 0) {
-                if (i) cout << tmp;
+                if (i) res += tmp;
                 tmp = 0;
             }
             int bit = 7 - i % 8;
             tmp |= (result_instruction[i] == '1') << bit;
         }
-        cout << tmp;
+        res += tmp;
     }
+    return res;
 }
 
 int main() {
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 
-    process_assembly_code();
+    cout << process_assembly_code();
 
     return 0;
 }
