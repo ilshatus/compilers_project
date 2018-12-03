@@ -49,6 +49,13 @@ string Instruction::to_binary(long long value, int len) {
     reverse(res.begin(), res.end());
     return res;
 }
+
+string Instruction::get_format(const string &value) {
+    if (value == "8") return "00";
+    if (value == "16") return "01";
+    return "11";
+}
+
 string Instruction::twos_complement(const string &value, int len) {
     int val = stoi(value);
     return twos_complement(val, len);

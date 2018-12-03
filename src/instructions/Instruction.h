@@ -24,6 +24,8 @@ protected:
 
     string to_binary(long long value, int len);
 
+    string get_format(const string &value);
+
     string twos_complement(const string &value, int len);
 
     string twos_complement(int value, int len);

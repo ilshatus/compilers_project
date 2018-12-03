@@ -19,6 +19,8 @@ TYPE Operator::find_type() {
         res = STOP;
     } else if (value == "DATA") {
         res = DATA;
+    } else if (value == "format") {
+        res = FORMAT;
     } else if (value.length() == 1 && (value[0] < '0' || value[0] > '9')) {
         switch (value[0]) {
             case ';' :
