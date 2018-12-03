@@ -132,13 +132,13 @@ void process_assembly_code(ofstream *out) {
         unsigned char tmp = 0;
         for (int i = 0; i < result_instruction.length(); i++) {
             if (i % 8 == 0) {
-                if (i) *out << (tmp);
+                if (i) *out << tmp;
                 tmp = 0;
             }
             int bit = 7 - i % 8;
             tmp |= (result_instruction[i] == '1') << bit;
         }
-        *out << (tmp);
+        *out << tmp;
     }
 }
 
