@@ -60,7 +60,7 @@ void add_instructions(vector<Instruction *> &instructions, unordered_map<string,
     instructions.push_back(new DefaultInstruction());
 }
 
-void process_assembly_code(ofstream *out) {
+string process_assembly_code() {
     vector<Instruction *> instructions;
     vector<string> result_instructions;
     unordered_map<string, int> labels;
@@ -98,7 +98,7 @@ void process_assembly_code(ofstream *out) {
 
     code_lines.emplace_back("stop");
 
-    unsigned int data_length = result_instructions.size();
+    unsigned int data_length = (int) result_instructions.size();
 
     for (auto &jmp_label : jmp_labels) {
         labels[jmp_label.first] = jmp_label.second + (int) result_instructions.size();
@@ -106,6 +106,7 @@ void process_assembly_code(ofstream *out) {
 
     add_instructions(instructions, labels);
 
+    string res;
     for (string &code_line : code_lines) {
         for (Instruction *cur : instructions) {
             try {
@@ -114,7 +115,7 @@ void process_assembly_code(ofstream *out) {
                     break;
                 }
             } catch (string &str) {
-                *out << str;
+                cerr << str;
                 exit(0);
             }
         }
@@ -122,31 +123,34 @@ void process_assembly_code(ofstream *out) {
 
     unsigned char version = 0;
     unsigned char padding = 0;
-    *out << version << padding;
-    *out << (unsigned char)((data_length >> 11) & 15);
-    *out << (unsigned char)((data_length >> 7) & 15);
-    *out << (unsigned char)((data_length >> 3) & 15);
-    *out << (unsigned char)((data_length << 1) & 15);
+    res += version;
+    res += padding;
+    res += (unsigned char)((data_length >> 11) & 15);
+    res += (unsigned char)((data_length >> 7) & 15);
+    res += (unsigned char)((data_length >> 3) & 15);
+    res += (unsigned char)((data_length << 1) & 15);
 
     for (string &result_instruction : result_instructions) {
         unsigned char tmp = 0;
         for (int i = 0; i < result_instruction.length(); i++) {
             if (i % 8 == 0) {
-                if (i) *out << tmp;
+                if (i) res += tmp;
                 tmp = 0;
             }
             int bit = 7 - i % 8;
             tmp |= (result_instruction[i] == '1') << bit;
         }
-        *out << tmp;
+        res += tmp;
     }
+    return res;
 }
 
 int main() {
     freopen("../input.txt", "r", stdin);
     ofstream out ("../output.txt", ios::out | ios::binary);
 
-    process_assembly_code(&out);
+    string res = process_assembly_code();
+    out << res;
 
     return 0;
 }
