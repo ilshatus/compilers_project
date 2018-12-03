@@ -1,9 +1,9 @@
 R2 := *R5;
 R2 := R5 + 5;
 R2 := R5 + -4;
-R2 := 7;
+R10 := 0;
 *R2 := R5;
-R2 := R5;
+R2 := R5 format 16;
 R2 += R5 format 16;
 R2 -= R5 format 16;
 R2 >>= R5 format 16;
@@ -17,3 +17,8 @@ R2 ?= R5 format 16;
 if R2 goto R5;
 skip
 stop
+<SIZE>
+DATA 3;
+R2 := ARRAY;
+<ARRAY>
+DATA 500, 0, 2, 4;
