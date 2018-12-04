@@ -11,4 +11,4 @@ cmake --build .
 
 In order to execute, check `bin` folder in project directory for binaries. The assembly code to process is taken from `input.txt`, the resulting binary code is put into `output.txt`.
 
-In order to test, you need to execute the corresponding test file from `tests` folder.
+In order to test, you need to execute the corresponding test file from `test` folder.
