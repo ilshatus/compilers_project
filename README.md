@@ -1,9 +1,6 @@
 # ERA Project Assembly
 ## Team
-Aidar Valeev
-Ilshat Gibadullin
-Nikolay Gaivoronskiy
-Ildar Yalalov
+Aidar Valeev, Ilshat Gibadullin, Nikolay Gaivoronskiy, Ildar Yalalov.
 
 ## Build
 
