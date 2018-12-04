@@ -5,7 +5,7 @@
 
 int main() {
     std::ifstream ifs("../input.txt");
-    std::ofstream ofs("../output.txt", std::ios::out | std::ios::binary);
+    std::ofstream ofs("../output.txt");
     ofs << process_assembly_code(ifs);
     return 0;
 }
