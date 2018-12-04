@@ -59,7 +59,6 @@ void add_instructions(vector<Instruction *> &instructions, unordered_map<string,
     instructions.push_back(new DefaultInstruction());
 }
 
-
 string process_assembly_code(std::istream& in) {
     vector<Instruction *> instructions;
     vector<string> result_instructions;
@@ -96,12 +95,17 @@ string process_assembly_code(std::istream& in) {
         }
     }
 
+    code_lines.emplace_back("stop");
+
+    unsigned int data_length = (int) result_instructions.size();
+
     for (auto &jmp_label : jmp_labels) {
         labels[jmp_label.first] = jmp_label.second + (int) result_instructions.size();
     }
 
     add_instructions(instructions, labels);
 
+    string res;
     for (string &code_line : code_lines) {
         for (Instruction *cur : instructions) {
             try {
@@ -110,12 +114,21 @@ string process_assembly_code(std::istream& in) {
                     break;
                 }
             } catch (string &str) {
-                cout << str;
+                cerr << str;
                 exit(0);
             }
         }
     }
-    string res;
+
+    unsigned char version = 0;
+    unsigned char padding = 0;
+    res += version;
+    res += padding;
+    res += (unsigned char)((data_length >> 11) & 15);
+    res += (unsigned char)((data_length >> 7) & 15);
+    res += (unsigned char)((data_length >> 3) & 15);
+    res += (unsigned char)((data_length << 1) & 15);
+
     for (string &result_instruction : result_instructions) {
         unsigned char tmp = 0;
         for (int i = 0; i < result_instruction.length(); i++) {
