@@ -96,12 +96,15 @@ string process_assembly_code(std::istream& in) {
     unordered_map<string, int> jmp_labels;
     auto data_instruction = new DataInstruction();
     int curr_code_line = 0;
+    auto lda_instruction = new LDAInstruction();
+    unordered_map<string, int> tmp_labels;
+    auto ldc_instruction = new LDCInstruction(tmp_labels);
     for (int i = 0; i < lines.size(); i++) {
         if (is_label(lines[i])) {
             string label = lines[i].substr(1, lines[i].length() - 2);
             i++;
             if (i != lines.size() && data_instruction->is_this(lines[i])) {
-                labels[label] = (int) result_instructions.size();
+                labels[label] = 2 * (int) result_instructions.size();
                 while (i < lines.size() && data_instruction->is_this(lines[i])) {
                     vector<string> tmp = data_instruction->process_to_vector(lines[i]);
                     result_instructions.insert(result_instructions.end(), tmp.begin(), tmp.end());
@@ -112,7 +115,18 @@ string process_assembly_code(std::istream& in) {
             }
             i--;
         } else {
-            curr_code_line++;
+            if (lda_instruction->is_this(lines[i])) {
+                curr_code_line += 3;
+            } else if (ldc_instruction->is_this(lines[i])) {
+                try {
+                    ldc_instruction->process(lines[i]);
+                    curr_code_line++;
+                } catch (string &s) {
+                    curr_code_line += 4;
+                }
+            } else {
+                curr_code_line++;
+            }
             code_lines.push_back(lines[i]);
         }
     }
@@ -122,7 +136,7 @@ string process_assembly_code(std::istream& in) {
     unsigned int data_length = (int) result_instructions.size();
 
     for (auto &jmp_label : jmp_labels) {
-        labels[jmp_label.first] = jmp_label.second + (int) result_instructions.size();
+        labels[jmp_label.first] = jmp_label.second + 2 * data_length;
     }
 
     add_instructions(instructions, labels);
