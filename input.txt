@@ -1,24 +1,58 @@
-R2 := *R5;
-R2 := R5 + 5;
-R2 := R5 + -4;
-R10 := 0;
-*R2 := R5;
-R2 := R5 format 16;
-R2 += R5 format 16;
-R2 -= R5 format 16;
-R2 >>= R5 format 16;
-R2 <<= R5 format 16;
-R2 |= R5 format 16;
-R2 &= R5 format 16;
-R2 ^= R5 format 16;
-R2 <= R5 format 16;
-R2 >= R5 format 16;
-R2 ?= R5 format 16;
-if R2 goto R5;
+R1 := 1;
+<LoopOuter>
+R3 := Size;
+R3 := *R3;
+R4 := 1;
+R3 -= R4;
+R3 ?= R1;
+R4 &= R3;
+R3 := OutOuter;
+if R4 goto R3;
+R2 := R1;
+<LoopInner>
+R3 := 0;
+R3 ?= R2;
+R4 := 4;
+R3 &= R4;
+R4 := OutInner;
+if R3 goto R4;
+R10 := Array;
+R10 += R2;
+R11 := *R10;
+R12 := R10;
+R13 := 1;
+R12 -= R13;
+R12 := *R12;
+R3 := R12;
+R3 ?= R11;
+R4 := 5;
+R4 &= R3;
+R3 := OutExchange;
+if R4 goto R3;
+R3 := R10;
+R4 := 1;
+R3 -= R4;
+*R3 := R11;
+*R10:= R12;
+<OutExchange>
+R3 := 1;
+R2 -= R3;
+R4 := LoopInner;
+if R3 goto R4;
+<OutInner>
+R3 := 1;
+R1 += R3;
+R4 := LoopOuter;
+if R3 goto R4;
 skip
+<OutOuter>
+R15 := Size;
+R15 := *R15;
+R16 := Array;
 stop
-<SIZE>
-DATA 3;
-R2 := ARRAY;
-<ARRAY>
-DATA 500, 0, 2, 4;
+skip
+<Size>
+DATA 20;
+<Array>
+DATA 537, 242, 114, 436, 337, 296, 285, 655, 639, 436;
+DATA 912, 520, 624, 551, 600, 741, 612, 943, 871, 735;

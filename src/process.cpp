@@ -24,6 +24,7 @@
 #include "instructions/DefaultInstruction.h"
 #include "instructions/DataInstruction.h"
 #include <unordered_map>
+#include <algorithm>
 
 bool is_label(const string &line) {
     if (line.length() == 0)
@@ -57,6 +58,27 @@ void add_instructions(vector<Instruction *> &instructions, unordered_map<string,
     instructions.push_back(new NOPInstruction());
     instructions.push_back(new STOPInstruction());
     instructions.push_back(new DefaultInstruction());
+}
+
+string to_binary(int num) {
+    string s, res;
+    while (num) {
+        s += (char) (num % 2 + '0');
+        num /= 2;
+    }
+    while (s.length() < 32) s += '0';
+    reverse(s.begin(), s.end());
+    unsigned char tmp = 0;
+    for (int i = 0; i < 32; i++) {
+        if (i % 8 == 0) {
+            if (i) res += tmp;
+            tmp = 0;
+        }
+        int bit = 7 - i % 8;
+        tmp |= (s[i] == '1') << bit;
+    }
+    res += tmp;
+    return res;
 }
 
 string process_assembly_code(std::istream& in) {
@@ -120,14 +142,12 @@ string process_assembly_code(std::istream& in) {
         }
     }
 
+    // header
     unsigned char version = 0;
     unsigned char padding = 0;
     res += version;
     res += padding;
-    res += (unsigned char)((data_length >> 11) & 15);
-    res += (unsigned char)((data_length >> 7) & 15);
-    res += (unsigned char)((data_length >> 3) & 15);
-    res += (unsigned char)((data_length << 1) & 15);
+    res += to_binary(2 * data_length);
 
     for (string &result_instruction : result_instructions) {
         unsigned char tmp = 0;
